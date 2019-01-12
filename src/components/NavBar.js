@@ -1,9 +1,9 @@
-/**
- * Created by serg on 11-Jan-19.
- */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * Navigation panel component
+ */
 export default class NavBar extends Component{
     render() {
         return(
@@ -15,7 +15,6 @@ export default class NavBar extends Component{
                     <ul className="nav navbar-nav">
                         <li><a href="#/quizlist" onClick={() => this.props.changePage('quizList')}>Quiz List</a></li>
                         <li><a href="#/createquiz" onClick={() => this.props.changePage('quizCreate', null)}>Create Quiz</a></li>
-                        <li><a href="#">Link3</a></li>
                     </ul>
                 </div>
             </nav>

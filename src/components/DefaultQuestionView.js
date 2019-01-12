@@ -4,9 +4,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-export default class DefaultQuestion extends Component {
-    constructor() {
-        super();
+/**
+ * Default question view
+ */
+export default class DefaultQuestionView extends Component {
+    constructor(props) {
+        super(props);
         this.state = {
             question : {},
         };
@@ -39,5 +42,5 @@ export default class DefaultQuestion extends Component {
     }
 }
 
-DefaultQuestion.propTypes = {question : PropTypes.object};
-DefaultQuestion.defaultProps = {quiz: null};
+DefaultQuestionView.propTypes = {question : PropTypes.object};
+DefaultQuestionView.defaultProps = {quiz: null};

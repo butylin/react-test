@@ -1,41 +1,35 @@
-/**
- * Created by serg on 10-Jan-19.
- */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import uuid from 'uuid';
 import QuestionEdit from '../components/QuestionEdit';
 
-
+/**
+ * Implements quiz edit/create page
+ */
 export default class QuizEdit extends Component{
     constructor(props) {
         super(props);
 
         let currentQuiz = this.getQuizForEdit();
-
         this.state = {
             currentQuiz : currentQuiz,
             newQuestions : [],
             success : null
         };
 
-        console.log('CURRENT QUIZ....');
-        console.log(this.state.currentQuiz);
-
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleTitleChange = this.handleTitleChange.bind(this);
         this.handleAddQuestion = this.handleAddQuestion.bind(this);
     }
 
+    /**
+     * Gets existing of creates empty quiz
+     */
     getQuizForEdit() {
         let newQuiz = {};
 
         if(this.props.quiz === null){
-            newQuiz = {
-                id : uuid.v4(),
-                title : '',
-                questions : []
-            }
+            newQuiz = this.getEmptyQuiz();
         }else {
             newQuiz = this.props.quiz;
         }
@@ -43,16 +37,21 @@ export default class QuizEdit extends Component{
         return newQuiz;
     }
 
+    getEmptyQuiz() {
+        return {
+            id : uuid.v4(),
+            title : '',
+            questions : []
+        };
+    }
 
     handleSubmit(event){
         let oldQuestions = this.state.currentQuiz.questions;
         let newQuestions = this.state.newQuestions;
         let currentQuiz = this.state.currentQuiz;
 
+        //merges old and newly created questions in a quiz
         currentQuiz.questions = oldQuestions.concat(newQuestions);
-        console.log('SAVING QUIZ....');
-        console.log(currentQuiz);
-
         this.props.saveQuiz(currentQuiz);
         event.preventDefault();
     }
@@ -66,7 +65,18 @@ export default class QuizEdit extends Component{
     }
 
     handleAddQuestion(){
-        let newQuestion = {
+        let newQuestion = this.getEmptyQuestion();
+        let newQuestions = this.state.newQuestions;
+        newQuestions.push(newQuestion);
+
+        this.setState({
+            newQuestions : newQuestions
+        });
+    }
+
+    //for simplification all questions contain exactly 4 answers
+    getEmptyQuestion() {
+        return {
             id : 'QN_' + uuid.v4(),
             type : 'MULT',
             text : '',
@@ -93,15 +103,6 @@ export default class QuizEdit extends Component{
                 },
             ]
         };
-
-        // let quiz = this.state.currentQuiz;
-        // quiz.questions.push(newQuestion);
-        let newQuestions = this.state.newQuestions;
-        newQuestions.push(newQuestion);
-
-        this.setState({
-            newQuestions : newQuestions
-        });
     }
 
     render() {
@@ -113,24 +114,6 @@ export default class QuizEdit extends Component{
 
         return (
             <div>
-                {
-
-                    this.state.success === "New quiz created." ?
-                        <div className='alert alert-success'>
-                            Product was saved.
-                        </div>
-                        : null
-                }
-
-                {
-
-                    !this.state.successCreation === "Unable to create product." ?
-                        <div className='alert alert-danger'>
-                            Unable to save product. Please try again.
-                        </div>
-                        : null
-                }
-
                 <form onSubmit={this.handleSubmit}>
                     <table className='table table-bordered table-hover'>
                         <tbody>
@@ -159,7 +142,6 @@ export default class QuizEdit extends Component{
                                 />
                             </td>
                         </tr>
-                        {/*questions*/}
                         <tr>
                             <td>Questions</td>
                             <td>

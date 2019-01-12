@@ -1,13 +1,13 @@
-/**
- * Created by serg on 10-Jan-19.
- */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import QuestionFactory from '../utils/QuestionFactory';
 
-export default class Quiz extends Component {
-    constructor(){
-        super();
+/**
+ * Implements the view component of a quiz
+ */
+export default class QuizView extends Component {
+    constructor(props){
+        super(props);
         this.state = {
             quiz : {}
         }
@@ -17,14 +17,14 @@ export default class Quiz extends Component {
         this.setState({
            quiz : this.props.quiz
         });
-
     }
 
     render() {
         console.log(this.state.quiz);
         let questionComponents;
         if(this.state.quiz){
-            questionComponents = this.state.quiz.questions.map(q => QuestionFactory.getQuestionComponent(q));
+            //question components are provided by QuestionFactory based on question type
+            questionComponents = this.state.quiz.questions.map((q) => QuestionFactory.getQuestionComponent(q));
         }
 
         return (
@@ -36,6 +36,6 @@ export default class Quiz extends Component {
     }
 }
 
-Quiz.propTypes = {quiz : PropTypes.object};
-Quiz.defaultProps = {quiz: null};
+QuizView.propTypes = {quiz : PropTypes.object};
+QuizView.defaultProps = {quiz: null};
 

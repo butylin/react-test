@@ -1,20 +1,19 @@
-/**
- * Created by serg on 11-Jan-19.
- */
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import uuid from 'uuid';
 
+/**
+ * Implements question edit/create page
+ */
 export default class QuestionEdit extends Component{
-
     constructor(props) {
         super(props);
 
-        let question = this.getQuestionForEdit();
+        let question = this.props.question;
         console.log(question);
         this.state = {
             question : question
-        }
+        };
 
         this.handleTextChange = this.handleTextChange.bind(this);
         this.handleAnswerChange = this.handleAnswerChange.bind(this);
@@ -28,67 +27,49 @@ export default class QuestionEdit extends Component{
         });
     }
 
-    handleAnswerChange(event) {
+    handleSetCorrect(event) {
         let question = this.state.question;
-        let index = event.target.getAttribute("id");
-        //console.log(index);
-        question.answers[index].text = event.target.value;
-
+        let index = event.target.value;
+        question.answers[index].correct = !question.answers[index].correct;
         this.setState({
             question : question
         });
     }
 
-    getQuestionForEdit() {
-        let question;
+    handleAnswerChange(event) {
+        let question = this.state.question;
+        let index = event.target.getAttribute("id");
+        question.answers[index].text = event.target.value;
+        this.setState({
+            question : question
+        });
+    }
 
-        if(this.props.question === null){
-            question = {
-                id : 'QN_' + uuid.v4(),
-                type : 'MULT',
-                text : '',
-                answers : [
-                    {
-                        index : '0',
-                        correct : undefined,
-                        text : ''
-                    },
-                    {
-                        index : '1',
-                        correct : undefined,
-                        text : ''
-                    },
-                    {
-                        index : '2',
-                        correct : undefined,
-                        text : ''
-                    },
-                    {
-                        index : '3',
-                        correct : undefined,
-                        text : ''
-                    },
-                ]
-            };
-        } else {
-            question = this.props.question;
-        }
-
-        return question;
+    handleQuestionDelete(id) {
+        alert('delete ' + this.state.question.id);
     }
 
     render() {
         let answers = this.state.question.answers.map((a) => {
             return (
-                <li className = "list-group-item" key={a.id}>
+                <li key = {a.id} className = "list-group-item">
                     <input
-                        type='text'
-                        id={a.index}
-                        value={a.text}
-                        onChange={this.handleAnswerChange}
+                        type = 'text'
+                        id = {a.index}
+                        value = {a.text}
+                        onChange = {this.handleAnswerChange}
                         required
-                        className='form-control'
+                        className = 'form-control'
                     />
+                    <label className="checkbox-inline">
+                        <input
+                            type="checkbox"
+                            value={a.index}
+                            defaultChecked = {a.correct}
+                            onChange={this.handleSetCorrect.bind(this)}
+                        />
+                            Correct
+                    </label>
                 </li>
             );
 
