@@ -1,3 +1,13 @@
+The application implements following required functions: 
+  - Create/edit/delete questionnaire (quiz)   
+  - Preview questionnaire (questions, correct answers)
+
+Quiz-data is generated in App.js.
+App uses 'uuid'library to generate random unique identifiers for objects.
+  
+
+###############################################################################################
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
